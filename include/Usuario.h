@@ -10,14 +10,21 @@ class Usuario {
 protected:
     QString nome;
     QString email;
+    QString cpf;
+    QString dataNascimento; // Format: YYYY-MM-DD
+    QString fotoPerfil; // Path or base64 encoded image
 
 public:
     /**
      * @brief Construtor da classe Usuario.
      * @param nome Nome do usuário.
      * @param email Email do usuário.
+     * @param cpf CPF do usuário.
+     * @param dataNascimento Data de nascimento no formato YYYY-MM-DD.
+     * @param fotoPerfil Caminho ou base64 da foto de perfil.
      */
-    Usuario(const QString& nome, const QString& email);
+    Usuario(const QString& nome, const QString& email, const QString& cpf, 
+            const QString& dataNascimento, const QString& fotoPerfil);
 
     virtual ~Usuario() = default;
 
@@ -32,6 +39,54 @@ public:
      * @return QString contendo o email.
      */
     QString getEmail() const;
+
+    /**
+     * @brief Obtém o CPF do usuário.
+     * @return QString contendo o CPF.
+     */
+    QString getCpf() const;
+
+    /**
+     * @brief Obtém a data de nascimento do usuário.
+     * @return QString contendo a data no formato YYYY-MM-DD.
+     */
+    QString getDataNascimento() const;
+
+    /**
+     * @brief Obtém a foto de perfil do usuário.
+     * @return QString contendo o caminho ou base64 da foto.
+     */
+    QString getFotoPerfil() const;
+
+    /**
+     * @brief Define o nome do usuário.
+     * @param nome Novo nome do usuário.
+     */
+    void setNome(const QString& nome);
+
+    /**
+     * @brief Define o email do usuário.
+     * @param email Novo email do usuário.
+     */
+    void setEmail(const QString& email);
+
+    /**
+     * @brief Define o CPF do usuário.
+     * @param cpf Novo CPF do usuário.
+     */
+    void setCpf(const QString& cpf);
+
+    /**
+     * @brief Define a data de nascimento do usuário.
+     * @param dataNascimento Nova data no formato YYYY-MM-DD.
+     */
+    void setDataNascimento(const QString& dataNascimento);
+
+    /**
+     * @brief Define a foto de perfil do usuário.
+     * @param fotoPerfil Novo caminho ou base64 da foto.
+     */
+    void setFotoPerfil(const QString& fotoPerfil);
 
     /**
      * @brief Método virtual puro para identificar o tipo de usuário.
