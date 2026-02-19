@@ -3,57 +3,66 @@
 #
 # @file
 # @version 0.1
-
 CXX = g++
 CXXFLAGS = -fPIC -std=c++17 -I./include $(shell pkg-config --cflags Qt6Core Qt6Test)
 LDFLAGS = $(shell pkg-config --libs Qt6Core Qt6Test)
-MOC = moc
+
+# Caminho exato que você indicou
+MOC = /usr/lib/qt6/moc
 
 SRC_DIR = src
 INC_DIR = include
 OBJ_DIR = objs
 TEST_DIR = tests
 
-# Fontes do Core (sem a main.cpp gráfica para a biblioteca estática)
+# Fontes do Core
 CORE_SRCS = $(SRC_DIR)/Usuario.cpp $(SRC_DIR)/Cliente.cpp $(SRC_DIR)/Fornecedor.cpp $(SRC_DIR)/GerenciadorUsuarios.cpp
 CORE_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CORE_SRCS))
 
-# Objeto MOC
+# Objetos MOC
 MOC_SRC = $(OBJ_DIR)/moc_GerenciadorUsuarios.cpp
 MOC_OBJ = $(OBJ_DIR)/moc_GerenciadorUsuarios.o
+TEST_MOC = $(TEST_DIR)/test_funcionais.moc
 
 TARGET_LIB = $(OBJ_DIR)/libcore.a
 TEST_EXEC = $(OBJ_DIR)/test_runner
 
-all: $(TARGET_LIB) $(TEST_EXEC)
+# Regra principal
+all: dirs $(TARGET_LIB) $(TEST_MOC) $(TEST_EXEC)
 
-# Gerar arquivo moc para o GerenciadorUsuarios (requerido pelo Q_OBJECT)
+# Garante que a pasta de objetos exista
+dirs:
+	mkdir -p $(OBJ_DIR)
+
+# 1. Gerar arquivo moc para o GerenciadorUsuarios
 $(MOC_SRC): $(INC_DIR)/GerenciadorUsuarios.h
-	@mkdir -p $(OBJ_DIR)
 	$(MOC) $< -o $@
 
+# 2. Gerar o .moc do arquivo de testes
+$(TEST_MOC): $(TEST_DIR)/test_funcionais.cpp
+	$(MOC) $< -o $@
+
+# 3. Compilar objetos padrão
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# 4. Compilar o arquivo moc gerado
 $(MOC_OBJ): $(MOC_SRC)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Compilar objetos
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-# Criar biblioteca estática
+# 5. Criar biblioteca estática
 $(TARGET_LIB): $(CORE_OBJS) $(MOC_OBJ)
 	ar rcs $@ $^
 
-# Compilar e linkar testes
-$(TEST_EXEC): $(TEST_DIR)/test_funcionais.cpp $(TARGET_LIB)
+# 6. Compilar e linkar executável de testes
+$(TEST_EXEC): $(TEST_DIR)/test_funcionais.cpp $(TEST_MOC) $(TARGET_LIB)
 	$(CXX) $(CXXFLAGS) $< -L$(OBJ_DIR) -lcore $(LDFLAGS) -o $@
 
-test: $(TEST_EXEC)
+test: all
 	./$(TEST_EXEC)
 
 clean:
-	rm -rf $(OBJ_DIR)/*
+	rm -rf $(OBJ_DIR) $(TEST_DIR)/*.moc
 
-.PHONY: all test clean
-
+.PHONY: all test clean dirs
 # end

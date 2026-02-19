@@ -1,0 +1,125 @@
+[
+ {
+  "directory": "/home/luiz/UFOP/25.2/eng.softI/ProFinder-",
+  "arguments": [
+   "g++",
+   "-fPIC",
+   "-std=c++17",
+   "-I./include",
+   "-I/usr/include/qt6/QtTest",
+   "-I/usr/include/qt6",
+   "-DQT_TESTLIB_LIB",
+   "-I/usr/include/qt6/QtCore",
+   "-DQT_CORE_LIB",
+   "-I/usr/lib/qt6/mkspecs/linux-g++",
+   "-c",
+   "src/Usuario.cpp",
+   "-o",
+   "objs/Usuario.o"
+  ],
+  "file": "src/Usuario.cpp"
+ },
+ {
+  "directory": "/home/luiz/UFOP/25.2/eng.softI/ProFinder-",
+  "arguments": [
+   "g++",
+   "-fPIC",
+   "-std=c++17",
+   "-I./include",
+   "-I/usr/include/qt6/QtTest",
+   "-I/usr/include/qt6",
+   "-DQT_TESTLIB_LIB",
+   "-I/usr/include/qt6/QtCore",
+   "-DQT_CORE_LIB",
+   "-I/usr/lib/qt6/mkspecs/linux-g++",
+   "-c",
+   "src/Cliente.cpp",
+   "-o",
+   "objs/Cliente.o"
+  ],
+  "file": "src/Cliente.cpp"
+ },
+ {
+  "directory": "/home/luiz/UFOP/25.2/eng.softI/ProFinder-",
+  "arguments": [
+   "g++",
+   "-fPIC",
+   "-std=c++17",
+   "-I./include",
+   "-I/usr/include/qt6/QtTest",
+   "-I/usr/include/qt6",
+   "-DQT_TESTLIB_LIB",
+   "-I/usr/include/qt6/QtCore",
+   "-DQT_CORE_LIB",
+   "-I/usr/lib/qt6/mkspecs/linux-g++",
+   "-c",
+   "src/Fornecedor.cpp",
+   "-o",
+   "objs/Fornecedor.o"
+  ],
+  "file": "src/Fornecedor.cpp"
+ },
+ {
+  "directory": "/home/luiz/UFOP/25.2/eng.softI/ProFinder-",
+  "arguments": [
+   "g++",
+   "-fPIC",
+   "-std=c++17",
+   "-I./include",
+   "-I/usr/include/qt6/QtTest",
+   "-I/usr/include/qt6",
+   "-DQT_TESTLIB_LIB",
+   "-I/usr/include/qt6/QtCore",
+   "-DQT_CORE_LIB",
+   "-I/usr/lib/qt6/mkspecs/linux-g++",
+   "-c",
+   "src/GerenciadorUsuarios.cpp",
+   "-o",
+   "objs/GerenciadorUsuarios.o"
+  ],
+  "file": "src/GerenciadorUsuarios.cpp"
+ },
+ {
+  "directory": "/home/luiz/UFOP/25.2/eng.softI/ProFinder-",
+  "arguments": [
+   "g++",
+   "-fPIC",
+   "-std=c++17",
+   "-I./include",
+   "-I/usr/include/qt6/QtTest",
+   "-I/usr/include/qt6",
+   "-DQT_TESTLIB_LIB",
+   "-I/usr/include/qt6/QtCore",
+   "-DQT_CORE_LIB",
+   "-I/usr/lib/qt6/mkspecs/linux-g++",
+   "-c",
+   "objs/moc_GerenciadorUsuarios.cpp",
+   "-o",
+   "objs/moc_GerenciadorUsuarios.o"
+  ],
+  "file": "objs/moc_GerenciadorUsuarios.cpp"
+ },
+ {
+  "directory": "/home/luiz/UFOP/25.2/eng.softI/ProFinder-",
+  "arguments": [
+   "g++",
+   "-fPIC",
+   "-std=c++17",
+   "-I./include",
+   "-I/usr/include/qt6/QtTest",
+   "-I/usr/include/qt6",
+   "-DQT_TESTLIB_LIB",
+   "-I/usr/include/qt6/QtCore",
+   "-DQT_CORE_LIB",
+   "-I/usr/lib/qt6/mkspecs/linux-g++",
+   "tests/test_funcionais.cpp",
+   "-Lobjs",
+   "-lcore",
+   "-lQt6Test",
+   "-lQt6Core",
+   "-o",
+   "objs/test_runner"
+  ],
+  "file": "tests/test_funcionais.cpp"
+ }
+]
