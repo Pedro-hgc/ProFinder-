@@ -1,7 +1,17 @@
 #include "../include/Usuario.h"
 
-Usuario::Usuario(const QString& nome, const QString& email)
-    : nome(nome), email(email) {}
+Usuario::Usuario(const QString& nome, const QString& email, const QString& cpf,
+                 const QString& dataNascimento, const QString& fotoPerfil)
+    : nome(nome), email(email), cpf(cpf), dataNascimento(dataNascimento), fotoPerfil(fotoPerfil) {}
 
 QString Usuario::getNome() const { return nome; }
 QString Usuario::getEmail() const { return email; }
+QString Usuario::getCpf() const { return cpf; }
+QString Usuario::getDataNascimento() const { return dataNascimento; }
+QString Usuario::getFotoPerfil() const { return fotoPerfil; }
+
+void Usuario::setNome(const QString& nome) { this->nome = nome; }
+void Usuario::setEmail(const QString& email) { this->email = email; }
+void Usuario::setCpf(const QString& cpf) { this->cpf = cpf; }
+void Usuario::setDataNascimento(const QString& dataNascimento) { this->dataNascimento = dataNascimento; }
+void Usuario::setFotoPerfil(const QString& fotoPerfil) { this->fotoPerfil = fotoPerfil; }
