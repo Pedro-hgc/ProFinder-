@@ -1,3 +1,5 @@
+// include/GerenciadorUsuarios.h
+
 #ifndef GERENCIADORUSUARIOS_H
 #define GERENCIADORUSUARIOS_H
 
@@ -6,41 +8,45 @@
 #include <QStringList>
 #include "Usuario.h"
 
-/**
- * @brief Classe controladora (Singleton/Manager) responsável pela lógica de negócios.
- * Expõe métodos Q_INVOKABLE para serem chamados diretamente pela interface QML (iOS/Android).
- */
 class GerenciadorUsuarios : public QObject {
     Q_OBJECT
-
+    Q_PROPERTY(int quantidadeFornecedores READ getQuantidadeFornecedores NOTIFY fornecedorAdicionado);
 private:
     QVector<Usuario*> m_usuarios;
+    const QString m_dbPath = "database.json";
+    void salvarDados();
+    void carregarDados();
 
 public:
     explicit GerenciadorUsuarios(QObject *parent = nullptr);
     ~GerenciadorUsuarios();
 
-    /**
-     * @brief Cadastra um novo cliente no sistema.
-     * @return true se sucesso, false caso contrário.
-     */
     Q_INVOKABLE bool cadastrarCliente(const QString& nome, const QString& email);
-
-    /**
-     * @brief Cadastra um novo fornecedor no sistema.
-     * @return true se sucesso, false caso contrário.
-     */
     Q_INVOKABLE bool cadastrarFornecedor(const QString& nome, const QString& email, const QString& servico);
-
-    /**
-     * @brief Busca fornecedores pelo nome ou serviço oferecido.
-     * @param termo Termo de busca.
-     * @return QStringList com os dados formatados dos fornecedores encontrados.
+  /**
+     * @brief Retorna a quantidade total de usuários (Clientes e Fornecedores) no sistema.
+     * Marcado como Q_INVOKABLE para ser acessível via QML.
+     * @return Inteiro com o tamanho do vetor de usuários.
      */
+    int getQuantidadeUsuarios() const;
+    int getQuantidadeFornecedores() const;
     Q_INVOKABLE QStringList buscarFornecedores(const QString& termo);
 
-    // Método auxiliar para os testes
-    int getQuantidadeUsuarios() const;
+signals:
+    /**
+     * @brief Sinal emitido sempre que o banco de dados JSON/Vetor é modificado.
+     */
+    void dadosAlterados();
+
+    /**
+     *@brief Sinal emitido sempre que o banco de dados tiver um novo Fornecedor Adicionado
+     **/
+     void fornecedorAdicionado();
+
+    /**
+     *@brief Sinal emitido sempre que o banco de dados tiver um novo Cliente Adicionado
+     **/
+     void clienteAdicionado();
 };
 
-#endif // GERENCIADORUSUARIOS_H
+#endif
