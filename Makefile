@@ -69,7 +69,7 @@ $(APP_EXEC): $(APP_OBJ) $(TARGET_LIB)
 test: dirs $(TARGET_LIB) $(TEST_MOC) $(TEST_EXEC)
 	./$(TEST_EXEC)
 
-run: all
+run: dirs $(TARGET_LIB) $(APP_EXEC)
 	./$(APP_EXEC)
 
 clean:
