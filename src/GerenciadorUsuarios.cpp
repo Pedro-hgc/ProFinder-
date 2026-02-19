@@ -97,6 +97,14 @@ QStringList GerenciadorUsuarios::buscarFornecedores(const QString& termo) {
     return resultados;
 }
 
-int GerenciadorUsuarios::getQuantidadeUsuarios() const {
-    return m_usuarios.size();
+int GerenciadorUsuarios::getQuantidadeUsuarios() const { return m_usuarios.size(); }
+int GerenciadorUsuarios::getQuantidadeFornecedores() const {
+    int counting = 0;
+
+    for (Usuario* u : m_usuarios) {
+        if (u->getTipo() == "Fornecedor" )
+            counting++;
+}
+
+    return counting;
 }
