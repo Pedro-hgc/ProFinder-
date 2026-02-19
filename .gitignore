@@ -4,6 +4,8 @@
 tmp/
 .cache/
 
+database.json
+
 
 # Build artifacts
 objs/
