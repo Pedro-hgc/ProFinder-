@@ -1,0 +1,20 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+
+# Build artifacts
+objs/
+*.o
+*.a
+*.moc
+moc_*.cpp
+
+# Qt/Creator
+*.pro.user
+build/
+
+# Doxygen
+docs/html/
+docs/latex/
