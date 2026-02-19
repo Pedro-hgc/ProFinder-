@@ -2,6 +2,7 @@
 .idea
 *.log
 tmp/
+.cache/
 
 
 # Build artifacts
@@ -18,3 +19,5 @@ build/
 # Doxygen
 docs/html/
 docs/latex/
+
+app_mvp
