@@ -61,7 +61,7 @@ Page {
             TextField {
                 id: cpfInput
                 Layout.fillWidth: true
-                placeholderText: "CPF (Required)"
+                placeholderText: "CPF/CNPJ (Required)"
             }
 
             // Date of Birth
@@ -104,12 +104,6 @@ Page {
                 Layout.fillWidth: true
                 visible: tipoCombo.currentText === "Fornecedor"
                 spacing: 15
-
-                TextField {
-                    id: cpfCnpjInput
-                    Layout.fillWidth: true
-                    placeholderText: "CPF/CNPJ (Required - pode ser CNPJ para empresas)"
-                }
 
                 // Service Photos
                 ColumnLayout {
@@ -288,14 +282,7 @@ Page {
                         );
                     } else {
                         // Validate supplier fields
-                        if (cpfCnpjInput.text === "" || !certificadoPath || 
-                            fotosServicoList.count < 1 || fotosServicoList.count > 5 || 
-                            servicosSelecionadosList.count === 0) {
-                            statusLabel.text = "Erro: Preencha todos os campos obrigatórios.";
-                            statusLabel.color = "red";
-                            return;
-                        }
-                        
+
                         // Convert services list to QVariantMap format
                         let servicosMap = {}
                         for (let i = 0; i < servicosSelecionadosList.count; i++) {
@@ -323,36 +310,35 @@ Page {
                         );
                     }
 
-                    if (sucesso) {
-                        statusLabel.text = sucesso ;
-                        if (sucesso.includes("Erro:"))
-                            statusLabel.color = "red";
-                        else
-                            statusLabel.color = "green"
-                        // Clear all fields
-                        nomeInput.text = ""
-                        emailInput.text = ""
-                        cpfInput.text = ""
-                        dataNascimentoInput = ""
-                        fotoPerfilPath = ""
-                        cpfCnpjInput.text = ""
-                        certificadoPath = ""
-                        fotosServicoList.clear()
-                        descricaoInput.text = ""
-                        servicosSelecionadosList.clear()
-                        
-                        // Navigate to appropriate homepage after registration
-                        Qt.callLater(function() {
-                            let usuario = gerenciador.getUsuarioLogado()
-                            if (usuario.logado) {
-                                if (usuario.tipo === "Cliente") {
-                                    stackView.push("TelaBusca.qml")
-                                } else if (usuario.tipo === "Fornecedor") {
-                                    stackView.push("TelaFornecedor.qml")
-                                }
+                    if (sucesso.includes("Erro:"))
+                        statusLabel.color = "red";
+                    else
+                        statusLabel.color = "green"
+                    statusLabel.text = sucesso ;
+                    // Clear all fields
+                    nomeInput.text = ""
+                    emailInput.text = ""
+                    cpfInput.text = ""
+                    dataNascimentoInput = ""
+                    fotoPerfilPath = ""
+                    certificadoPath = ""
+                    fotosServicoList.clear()
+                    descricaoInput.text = ""
+                    servicosSelecionadosList.clear()
+
+
+
+                    // Navigate to appropriate homepage after registration
+                    Qt.callLater(function() {
+                        let usuario = gerenciador.getUsuarioLogado()
+                        if (usuario.logado) {
+                            if (usuario.tipo === "Cliente") {
+                                stackView.push("TelaBusca.qml")
+                            } else if (usuario.tipo === "Fornecedor") {
+                                stackView.push("TelaFornecedor.qml")
                             }
-                        })
-                    }
+                        }
+                    })
                 }
             }
 
