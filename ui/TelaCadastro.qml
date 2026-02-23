@@ -276,15 +276,8 @@ Page {
                 Layout.fillWidth: true
                 text: "Cadastrar"
                 onClicked: {
-                    // Validate common fields
-                    if (nomeInput.text === "" || emailInput.text === "" || 
-                        cpfInput.text === "" || !dataNascimentoInput || !fotoPerfilPath) {
-                        statusLabel.text = "Erro: Preencha todos os campos obrigatórios.";
-                        statusLabel.color = "red";
-                        return;
-                    }
-                    
-                    let sucesso = false;
+
+                    let sucesso = null;
                     if (tipoCombo.currentText === "Cliente") {
                         sucesso = gerenciador.cadastrarCliente(
                             nomeInput.text, 
@@ -331,8 +324,11 @@ Page {
                     }
 
                     if (sucesso) {
-                        statusLabel.text = "Cadastrado com sucesso!";
-                        statusLabel.color = "green";
+                        statusLabel.text = sucesso ;
+                        if (sucesso.includes("Erro:"))
+                            statusLabel.color = "red";
+                        else
+                            statusLabel.color = "green"
                         // Clear all fields
                         nomeInput.text = ""
                         emailInput.text = ""
@@ -356,9 +352,6 @@ Page {
                                 }
                             }
                         })
-                    } else {
-                        statusLabel.text = "Erro: Preencha todos os campos obrigatórios.";
-                        statusLabel.color = "red";
                     }
                 }
             }
