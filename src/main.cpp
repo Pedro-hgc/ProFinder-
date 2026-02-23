@@ -5,7 +5,8 @@
 #include <QDir>
 #include <QDebug>
 #include "../include/GerenciadorUsuarios.h"
-#include "../include/DatabaseManager.h"
+#include "../include/database/DatabaseManager.h"
+
 
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
@@ -28,6 +29,7 @@ int main(int argc, char *argv[]) {
     }
 
     qDebug() << "Conectado ao banco de dados com sucesso!" ;
+
 
     return app.exec();
 }
