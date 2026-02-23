@@ -5,13 +5,13 @@ Fornecedor::Fornecedor(const QString& nome, const QString& email,
                        const QString& cpf, const QString& dataNascimento, const QString& fotoPerfil,
                        const QString& certificadoAntecedentes,
                        const QStringList& fotosServico, const QString& descricaoTrabalho,
-                       QVariantMap& servicosComAnos)
-    : Usuario(nome, email, cpf, dataNascimento, fotoPerfil), 
+                       QVariantMap& servicosComAnos, qsizetype id )
+    : Usuario(nome, email, cpf, dataNascimento, fotoPerfil, id ),
       certificadoAntecedentes(certificadoAntecedentes),
       fotosServico(fotosServico), descricaoTrabalho(descricaoTrabalho),
       servicosComAnos(servicosComAnos) {}
 
-QString Fornecedor::getTipo() const { return "Fornecedor"; }
+QString Fornecedor::getTipo() const { return "FORNECEDOR"; }
 
 QString Fornecedor::getCertificadoAntecedentes() const { return certificadoAntecedentes; }
 QStringList Fornecedor::getFotosServico() const { return fotosServico; }
