@@ -332,9 +332,9 @@ Page {
                     Qt.callLater(function() {
                         let usuario = gerenciador.getUsuarioLogado()
                         if (usuario.logado) {
-                            if (usuario.tipo === "Cliente") {
+                            if (usuario.tipo === "CLIENTE") {
                                 stackView.push("TelaBusca.qml")
-                            } else if (usuario.tipo === "Fornecedor") {
+                            } else if (usuario.tipo === "FORNECEDOR") {
                                 stackView.push("TelaFornecedor.qml")
                             }
                         }
