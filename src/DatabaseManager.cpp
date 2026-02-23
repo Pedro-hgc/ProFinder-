@@ -1,4 +1,7 @@
 #include "../include/DatabaseManager.h"
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QDebug>
 
 DatabaseManager &DatabaseManager::instance() {
 
@@ -25,6 +28,30 @@ bool DatabaseManager::connect () {
     return true;
 }
 
+bool DatabaseManager::addClient(Usuario *_user) {
+    QSqlQuery query(DatabaseManager::instance().database());
+
+    if (!query.prepare("INSERT INTO usuarios (tipo_usuario, nome, email, cpf, "
+                       "data_nascimento, foto_perfil) VALUES ('CLIENTE', :nome, "
+                       ":email, :cpf, :dataNascimento, :fotoPerfil)")) {
+
+        qDebug() << "Error at preparing Database Query!";
+        return false;
+    }
+
+    query.bindValue(":nome", _user->getNome());
+    query.bindValue(":email", _user->getEmail());
+    query.bindValue(":cpf", _user->getCpf());
+    query.bindValue(":dataNascimento", _user->getDataNascimento());
+    query.bindValue(":fotoPerfil", _user->getFotoPerfil());
+
+
+    if (!query.exec()) {
+        qDebug() << "Error at executing Database Query";
+        return false;
+    }
+    return true;
+}
 QSqlDatabase DatabaseManager::database() const {
     return m_db;
 
