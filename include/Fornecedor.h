@@ -33,7 +33,7 @@ public:
                const QString& cpf, const QString& dataNascimento, const QString& fotoPerfil,
                const QString& certificadoAntecedentes,
                const QStringList& fotosServico, const QString& descricaoTrabalho,
-               QVariantMap& servicosComAnos);
+               QVariantMap& servicosComAnos, qsizetype id = -1);
 
     /**
      * @brief Retorna o tipo do usuário.
