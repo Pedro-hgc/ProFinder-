@@ -9,7 +9,13 @@ QT_MODULES = Qt6Core Qt6Gui Qt6Qml Qt6Quick Qt6Test Qt6Sql Qt6Widgets
 CXXFLAGS = -fPIC -std=c++17 -I./include $(shell pkg-config --cflags $(QT_MODULES))
 LDFLAGS = $(shell pkg-config --libs $(QT_MODULES))
 
-MOC = /usr/lib/qt6/moc
+MOC_PATH = $(shell pkg-config --variable=host_bins Qt6Core)
+ifneq ($(MOC_PATH),)
+    MOC = $(MOC_PATH)/moc
+else
+    # Se falhar, tenta o nome comum no Arch/Fedora para Qt6
+    MOC = /usr/lib/qt6/moc
+endif
 
 SRC_DIR = src
 INC_DIR = include
