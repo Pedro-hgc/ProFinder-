@@ -20,7 +20,13 @@ public:
     explicit GerenciadorUsuarios(QObject *parent = nullptr);
     ~GerenciadorUsuarios();
 
-//    Q_INVOKABLE QVariantMap fazerLogin(const QString& email, const QString& cpf);
+
+    /**
+     *@brief Loga um Usuário no Sistema a partir do Email e CPF
+     *@return Retorna um Map com Atributos: Success 0=fail, 1=sucess; Message= Message Returned; Type = CLIENTE/FORNECEDOR
+     *
+     * */
+    Q_INVOKABLE QVariantMap fazerLogin(const QString& email, const QString& cpf);
 
  //   Q_INVOKABLE QVariantMap obterDetalhesFornecedor(int index);
 
