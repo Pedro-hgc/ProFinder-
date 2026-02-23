@@ -17,7 +17,7 @@ public:
      * @param fotoPerfil Caminho ou base64 da foto de perfil.
      */
     Cliente(const QString& nome, const QString& email, const QString& cpf,
-            const QString& dataNascimento, const QString& fotoPerfil);
+            const QString& dataNascimento, const QString& fotoPerfil, const qsizetype id = -1 );
 
     /**
      * @brief Retorna o tipo do usuário.
