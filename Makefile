@@ -5,11 +5,11 @@
 # @version 0.1
 CXX = g++
 # Adicionados Qt6Gui, Qt6Qml e Qt6Quick
-QT_MODULES = Qt6Core Qt6Gui Qt6Qml Qt6Quick Qt6Test Qt6Sql
+QT_MODULES = Qt6Core Qt6Gui Qt6Qml Qt6Quick Qt6Test Qt6Sql Qt6Widgets
 CXXFLAGS = -fPIC -std=c++17 -I./include $(shell pkg-config --cflags $(QT_MODULES))
 LDFLAGS = $(shell pkg-config --libs $(QT_MODULES))
 
-MOC = /usr/lib/qt6/libexec/moc
+MOC = /usr/lib/qt6/moc
 
 SRC_DIR = src
 INC_DIR = include
@@ -18,7 +18,7 @@ TEST_DIR = tests
 UI_DIR = ui
 
 # Fontes do Core
-CORE_SRCS = $(SRC_DIR)/Usuario.cpp $(SRC_DIR)/Cliente.cpp $(SRC_DIR)/Fornecedor.cpp $(SRC_DIR)/GerenciadorUsuarios.cpp
+CORE_SRCS = $(SRC_DIR)/Usuario.cpp $(SRC_DIR)/Cliente.cpp $(SRC_DIR)/Fornecedor.cpp $(SRC_DIR)/GerenciadorUsuarios.cpp $(SRC_DIR)/DatabaseManager.cpp
 CORE_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CORE_SRCS))
 
 # Fonte da UI (main.cpp)
