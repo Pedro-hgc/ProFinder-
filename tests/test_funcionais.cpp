@@ -13,21 +13,21 @@ class TestesFuncionais : public QObject {
 private slots:
     void init() {
         // Clean up database file before each test
-        QFile::remove("database.json");
+        QFile::remove("profinder_db.db");
     }
 
     void testCadastroCliente() {
         GerenciadorUsuarios manager;
-        bool res = manager.cadastrarCliente("João Silva", "joao@email.com");
+        bool res = manager.cadastrarCliente("João Silva", "joao@email.com", "000.000.000-00", "01/01/2000", "foto.png");
         QVERIFY(res == true);
         QCOMPARE(manager.getQuantidadeUsuarios(), 1);
 
         // Teste de falha (nome vazio)
-        res = manager.cadastrarCliente("", "vazio@email.com");
+        res = manager.cadastrarCliente("", "vazio@email.com","","","");
         QVERIFY(res == false);
         
         // Teste de falha (email vazio)
-        res = manager.cadastrarCliente("Nome", "");
+        res = manager.cadastrarCliente("Nome", "","","","");
         QVERIFY(res == false);
     }
 
@@ -42,11 +42,10 @@ private slots:
         fotos << "foto1.jpg" << "foto2.jpg" << "foto3.jpg";
         
         bool res = manager.cadastrarFornecedor(
-            "João Fornecedor", "joao@email.com",
-            "123.456.789-00", "certificado.pdf",
-            fotos, "Trabalho com qualidade e pontualidade",
-            "perfil.jpg", servicos
-        );
+            "João Fornecedor","joao@email.com",
+            "123.456.789-00", "15/10/2000","foto.png","12.000.0001-01",
+            "certificado.pdf", fotos,"Trabalho com qualidade e pontualidade",
+             servicos);
         
         QVERIFY(res == true);
         QCOMPARE(manager.getQuantidadeFornecedores(), 1);
@@ -63,37 +62,77 @@ private slots:
         
         // Teste: nome vazio
         bool res = manager.cadastrarFornecedor(
-            "", "email@test.com", "123.456.789-00",
-            "cert.pdf", fotos, "", "perfil.jpg", servicos
-        );
+            "",
+            "joao@email.com",
+            "123.456.789-00",
+            "15/10/2000",
+            "perfil.jpg",
+            "12.000.0001-01",
+            "certificado.pdf",
+            fotos,
+            "Trabalho com qualidade",
+            servicos
+            );
         QVERIFY(res == false);
         
         // Teste: email vazio
         res = manager.cadastrarFornecedor(
-            "Nome", "", "123.456.789-00",
-            "cert.pdf", fotos, "", "perfil.jpg", servicos
-        );
+            "João Fornecedor",
+            "",
+            "123.456.789-00",
+            "15/10/2000",
+            "perfil.jpg",
+            "12.000.0001-01",
+            "certificado.pdf",
+            fotos,
+            "Trabalho com qualidade",
+            servicos
+            );
         QVERIFY(res == false);
         
         // Teste: CPF/CNPJ vazio
         res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "",
-            "cert.pdf", fotos, "", "perfil.jpg", servicos
-        );
+            "João Fornecedor",
+            "joao@email.com",
+            "",
+            "15/10/2000",
+            "perfil.jpg",
+            "12.000.0001-01",
+            "certificado.pdf",
+            fotos,
+            "Trabalho com qualidade",
+            servicos
+            );
         QVERIFY(res == false);
         
         // Teste: certificado vazio
         res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "123.456.789-00",
-            "", fotos, "", "perfil.jpg", servicos
-        );
+            "João Fornecedor",
+            "joao@email.com",
+            "123.456.789-00",
+            "15/10/2000",
+            "perfil.jpg",
+            "12.000.0001-01",
+            "",
+            fotos,
+            "Trabalho com qualidade",
+            servicos
+            );
         QVERIFY(res == false);
         
         // Teste: foto de perfil vazia
         res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "123.456.789-00",
-            "cert.pdf", fotos, "", "", servicos
-        );
+            "João Fornecedor",
+            "joao@email.com",
+            "123.456.789-00",
+            "15/10/2000",
+            "",
+            "12.000.0001-01",
+            "certificado.pdf",
+            fotos,
+            "Trabalho com qualidade",
+            servicos
+            );
         QVERIFY(res == false);
     }
 
@@ -106,9 +145,17 @@ private slots:
         // Teste: nenhuma foto (deve falhar)
         QStringList fotosVazias;
         bool res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "123.456.789-00",
-            "cert.pdf", fotosVazias, "", "perfil.jpg", servicos
-        );
+            "Nome",
+            "email@test.com",
+            "123.456.789-00",
+            "15/10/2000",
+            "perfil.jpg",
+            "12.000.0001-01",
+            "cert.pdf",
+            fotosVazias,
+            "Descricao",
+            servicos
+            );
         QVERIFY(res == false);
         
         // Teste: mais de 5 fotos (deve falhar)
@@ -116,19 +163,33 @@ private slots:
         fotosMuitas << "foto1.jpg" << "foto2.jpg" << "foto3.jpg" 
                     << "foto4.jpg" << "foto5.jpg" << "foto6.jpg";
         res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "123.456.789-00",
-            "cert.pdf", fotosMuitas, "", "perfil.jpg", servicos
-        );
+            "Nome",
+            "email@test.com",
+            "123.456.789-00",
+            "01/01/2000",
+            "perfil.jpg",
+            "123456",
+            "cert.pdf",
+            fotosMuitas,
+            "Descricao",
+            servicos
+            );
         QVERIFY(res == false);
         
         // Teste: exatamente 5 fotos (deve passar)
         QStringList fotos5;
-        fotos5 << "foto1.jpg" << "foto2.jpg" << "foto3.jpg" 
-               << "foto4.jpg" << "foto5.jpg";
         res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "123.456.789-00",
-            "cert.pdf", fotos5, "", "perfil.jpg", servicos
-        );
+            "Nome",
+            "email@test.com",
+            "123.456.789-00",
+            "01/01/2000",
+            "perfil.jpg",
+            "12.345.678/0001-99",
+            "certificado.pdf",
+            fotos5,
+            "Descricao do trabalho",
+            servicos
+            );
         QVERIFY(res == true);
     }
 
@@ -141,9 +202,17 @@ private slots:
         // Teste: nenhum serviço (deve falhar)
         QVariantMap servicosVazios;
         bool res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "123.456.789-00",
-            "cert.pdf", fotos, "", "perfil.jpg", servicosVazios
-        );
+            "Nome",
+            "email@test.com",
+            "123.456.789-00",
+            "01/01/2000",
+            "perfil.jpg",
+            "123456",
+            "cert.pdf",
+            fotos,
+            "Descricao",
+            servicosVazios
+            );
         QVERIFY(res == false);
         
         // Teste: múltiplos serviços (deve passar)
@@ -151,10 +220,19 @@ private slots:
         servicosMultiplos["Encanador"] = 5;
         servicosMultiplos["Eletricista"] = 3;
         servicosMultiplos["Pintor"] = 7;
+
         res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "123.456.789-00",
-            "cert.pdf", fotos, "", "perfil.jpg", servicosMultiplos
-        );
+            "Nome",
+            "email@test.com",
+            "123.456.789-00",
+            "01/01/2000",
+            "perfil.jpg",
+            "123456",
+            "cert.pdf",
+            fotos,
+            "Descricao",
+            servicosMultiplos
+            );
         QVERIFY(res == true);
     }
 
@@ -168,16 +246,32 @@ private slots:
         
         // Teste: sem descrição (deve passar)
         bool res = manager.cadastrarFornecedor(
-            "Nome", "email@test.com", "123.456.789-00",
-            "cert.pdf", fotos, "", "perfil.jpg", servicos
-        );
+            "Nome",
+            "email@test.com",
+            "123.456.789-00",
+            "01/01/2000",
+            "perfil.jpg",
+            "123456",
+            "cert.pdf",
+            fotos,
+            "",
+            servicos
+            );
         QVERIFY(res == true);
         
         // Teste: com descrição (deve passar)
         res = manager.cadastrarFornecedor(
-            "Nome2", "email2@test.com", "987.654.321-00",
-            "cert2.pdf", fotos, "Trabalho com qualidade", "perfil2.jpg", servicos
-        );
+            "Nome2",
+            "email2@test.com",
+            "987.654.321-00",
+            "02/02/1990",
+            "perfil2.jpg",
+            "654321",
+            "cert2.pdf",
+            fotos,
+            "Trabalho com qualidade",
+            servicos
+            );
         QVERIFY(res == true);
     }
 
@@ -190,9 +284,18 @@ private slots:
         fotos << "foto1.jpg";
         
         manager.cadastrarFornecedor(
-            "Maria Souza", "maria@email.com", "123.456.789-00",
-            "cert.pdf", fotos, "", "perfil.jpg", servicos
-        );
+            "Maria Souza",
+            "maria@email.com",
+            "123.456.789-00",
+            "01/01/1990",
+            "perfil.jpg",
+            "12345678",
+            "cert.pdf",
+            fotos,
+            "Descricao",
+            servicos
+            );
+
         
         QStringList resultados = manager.buscarFornecedores("Maria");
         QCOMPARE(resultados.size(), 1);
@@ -201,17 +304,24 @@ private slots:
 
     void testBuscaFornecedoresPorEmail() {
         GerenciadorUsuarios manager;
-        
+
         QVariantMap servicos;
         servicos["Eletricista"] = 3;
         QStringList fotos;
         fotos << "foto1.jpg";
-        
+
         manager.cadastrarFornecedor(
-            "Carlos Silva", "carlos@email.com", "987.654.321-00",
-            "cert.pdf", fotos, "", "perfil.jpg", servicos
-        );
-        
+            "Carlos Silva",
+            "carlos@email.com",
+            "987.654.321-00",
+            "01/01/1985",
+            "perfil.jpg",
+            "65432100",
+            "cert.pdf",
+            fotos,
+            "Descricao",
+            servicos
+            );
         QStringList resultados = manager.buscarFornecedores("carlos@email.com");
         QCOMPARE(resultados.size(), 1);
         QVERIFY(resultados.at(0).contains("Carlos Silva"));
@@ -226,10 +336,17 @@ private slots:
         fotos << "foto1.jpg";
         
         manager.cadastrarFornecedor(
-            "Pedro Santos", "pedro@email.com", "111.222.333-44",
-            "cert.pdf", fotos, "", "perfil.jpg", servicos
-        );
-        
+            "Pedro Santos",
+            "pedro@email.com",
+            "111.222.333-44",
+            "20/05/1995",
+            "perfil.jpg",
+            "99.888.777/0001-11",
+            "cert.pdf",
+            fotos,
+            "Descricao do Pedro",
+            servicos
+            );
         QStringList resultados = manager.buscarFornecedores("111.222.333-44");
         QCOMPARE(resultados.size(), 1);
         QVERIFY(resultados.at(0).contains("Pedro Santos"));
@@ -249,15 +366,30 @@ private slots:
         fotos << "foto1.jpg";
         
         manager.cadastrarFornecedor(
-            "Maria Souza", "maria@email.com", "123.456.789-00",
-            "cert.pdf", fotos, "", "perfil.jpg", servicosMaria
-        );
+            "Maria Souza",
+            "maria@email.com",
+            "123.456.789-00",
+            "10/05/1990",
+            "perfil.jpg",
+            "11.222.333/0001-00",
+            "cert.pdf",
+            fotos,
+            "Especialista em Ar",
+            servicosMaria
+            );
         manager.cadastrarFornecedor(
-            "Carlos TI", "carlos@email.com", "987.654.321-00",
-            "cert2.pdf", fotos, "", "perfil2.jpg", servicosCarlos
-        );
-        manager.cadastrarCliente("Pedro", "pedro@email.com");
-        
+            "Carlos TI",
+            "carlos@email.com",
+            "987.654.321-00",
+            "15/08/1985",
+            "perfil2.jpg",
+            "44.555.666/0001-11",
+            "cert2.pdf",
+            fotos,
+            "Infraestrutura completa",
+            servicosCarlos
+            );
+        manager.cadastrarCliente("Pedro", "pedro@email.com", "111.222.333-44", "01/01/2000", "perfil.jpg");
         QStringList resultados = manager.buscarFornecedores("Redes");
         QCOMPARE(resultados.size(), 1);
         QVERIFY(resultados.at(0).contains("Carlos TI"));
@@ -276,15 +408,36 @@ private slots:
         fotos << "foto1.jpg";
         
         manager.cadastrarFornecedor(
-            "Fornecedor 1", "f1@email.com", "111.111.111-11",
-            "cert1.pdf", fotos, "", "perfil1.jpg", servicos
-        );
+            "Fornecedor 1",
+            "f1@email.com",
+            "111.111.111-11",
+            "01/01/1990",
+            "perfil1.jpg",
+            "111111110001",
+            "cert1.pdf",
+            fotos,
+            "Descricao",
+            servicos
+            );
         manager.cadastrarFornecedor(
-            "Fornecedor 2", "f2@email.com", "222.222.222-22",
-            "cert2.pdf", fotos, "", "perfil2.jpg", servicos
-        );
-        manager.cadastrarCliente("Cliente", "cliente@email.com");
-        
+            "Fornecedor 2",
+            "f2@email.com",
+            "222.222.222-22",
+            "02/02/1992",
+            "perfil2.jpg",
+            "222222220001",
+            "cert2.pdf",
+            fotos,
+            "Descricao 2",
+            servicos
+            );
+        manager.cadastrarCliente(
+            "Cliente",
+            "cliente@email.com",
+            "000.000.000-00",
+            "01/01/2000",
+            "perfil_cliente.jpg"
+            );
         QStringList resultados = manager.buscarFornecedores("");
         QCOMPARE(resultados.size(), 2);
     }
@@ -298,14 +451,29 @@ private slots:
         fotos << "foto1.jpg";
         
         manager.cadastrarFornecedor(
-            "Fornecedor 1", "f1@email.com", "111.111.111-11",
-            "cert1.pdf", fotos, "", "perfil1.jpg", servicos
-        );
+            "Fornecedor 1",
+            "f1@email.com",
+            "111.111.111-11",
+            "01/01/1990",
+            "perfil1.jpg",
+            "111111110001",
+            "cert1.pdf",
+            fotos,
+            "Descricao 1",
+            servicos
+            );
         manager.cadastrarFornecedor(
-            "Fornecedor 2", "f2@email.com", "222.222.222-22",
-            "cert2.pdf", fotos, "", "perfil2.jpg", servicos
-        );
-        
+            "Fornecedor 2",
+            "f2@email.com",
+            "222.222.222-22",
+            "02/02/1992",
+            "perfil2.jpg",
+            "222222220002",
+            "cert2.pdf",
+            fotos,
+            "Descricao 2",
+            servicos
+            );
         QVariantList resultados = manager.buscarFornecedoresComIndices("");
         QCOMPARE(resultados.size(), 2);
         
@@ -327,10 +495,17 @@ private slots:
         fotos << "foto1.jpg" << "foto2.jpg";
         
         manager.cadastrarFornecedor(
-            "João Fornecedor", "joao@email.com", "123.456.789-00",
-            "certificado.pdf", fotos, "Trabalho com qualidade",
-            "perfil.jpg", servicos
-        );
+            "João Fornecedor",
+            "joao@email.com",
+            "123.456.789-00",
+            "01/01/1980",
+            "perfil.jpg",
+            "12.345.678/0001-99",
+            "certificado.pdf",
+            fotos,
+            "Trabalho com qualidade",
+            servicos
+            );
         
         QVariantMap detalhes = manager.obterDetalhesFornecedor(0);
         
@@ -362,14 +537,29 @@ private slots:
         fotos << "foto1.jpg";
         
         manager.cadastrarFornecedor(
-            "Fornecedor 1", "f1@email.com", "111.111.111-11",
-            "cert1.pdf", fotos, "", "perfil1.jpg", servicos
-        );
+            "Fornecedor 1",
+            "f1@email.com",
+            "111.111.111-11",
+            "01/01/1990",
+            "perfil1.jpg",
+            "111111110001",
+            "cert1.pdf",
+            fotos,
+            "Descricao 1",
+            servicos
+            );
         manager.cadastrarFornecedor(
-            "Fornecedor 2", "f2@email.com", "222.222.222-22",
-            "cert2.pdf", fotos, "", "perfil2.jpg", servicos
-        );
-        
+            "Fornecedor 2",
+            "f2@email.com",
+            "222.222.222-22",
+            "02/02/1992",
+            "perfil2.jpg",
+            "222222220002",
+            "cert2.pdf",
+            fotos,
+            "Descricao 2",
+            servicos
+            );
         int index1 = manager.getIndiceFornecedor("Fornecedor 1");
         int index2 = manager.getIndiceFornecedor("Fornecedor 2");
         int indexInexistente = manager.getIndiceFornecedor("Inexistente");
@@ -392,10 +582,17 @@ private slots:
         fotos << "foto1.jpg" << "foto2.jpg";
         
         manager.cadastrarFornecedor(
-            "Fornecedor Completo", "completo@email.com", "123.456.789-00",
-            "cert.pdf", fotos, "Ofereço múltiplos serviços", "perfil.jpg", servicos
-        );
-        
+            "Fornecedor Completo",
+            "completo@email.com",
+            "123.456.789-00",
+            "10/10/1980",
+            "perfil.jpg",
+            "12345678000199",
+            "cert.pdf",
+            fotos,
+            "Ofereço múltiplos serviços",
+            servicos
+            );
         QVariantMap detalhes = manager.obterDetalhesFornecedor(0);
         QVariantMap servicosRetornados = detalhes["servicosComAnos"].toMap();
         
@@ -424,10 +621,17 @@ private slots:
         fotos << "foto1.jpg";
         
         manager.cadastrarFornecedor(
-            "João Silva", "joao@email.com", "123.456.789-00",
-            "cert.pdf", fotos, "Descrição", "perfil.jpg", servicos
-        );
-        
+            "João Silva",
+            "joao@email.com",
+            "123.456.789-00",
+            "01/01/1980",
+            "perfil.jpg",
+            "12345678000199",
+            "cert.pdf",
+            fotos,
+            "Descrição",
+            servicos
+            );
         QStringList resultados = manager.buscarFornecedores("");
         QCOMPARE(resultados.size(), 1);
         
@@ -454,18 +658,40 @@ private slots:
         QCOMPARE(manager.getQuantidadeFornecedores(), 0);
         
         manager.cadastrarFornecedor(
-            "Fornecedor 1", "f1@email.com", "111.111.111-11",
-            "cert1.pdf", fotos, "", "perfil1.jpg", servicos
-        );
+            "Fornecedor 1",
+            "f1@email.com",
+            "111.111.111-11",
+            "01/01/1990",
+            "perfil1.jpg",
+            "111111110001",
+            "cert1.pdf",
+            fotos,
+            "Descricao 1",
+            servicos
+            );
+
         QCOMPARE(manager.getQuantidadeFornecedores(), 1);
-        
         manager.cadastrarFornecedor(
-            "Fornecedor 2", "f2@email.com", "222.222.222-22",
-            "cert2.pdf", fotos, "", "perfil2.jpg", servicos
-        );
+            "Fornecedor 2",
+            "f2@email.com",
+            "222.222.222-22",
+            "02/02/1992",
+            "perfil2.jpg",
+            "222222220002",
+            "cert2.pdf",
+            fotos,
+            "Descricao 2",
+            servicos
+            );
         QCOMPARE(manager.getQuantidadeFornecedores(), 2);
         
-        manager.cadastrarCliente("Cliente", "cliente@email.com");
+        manager.cadastrarCliente(
+            "Cliente",
+            "cliente@email.com",
+            "000.000.000-00",
+            "01/01/2000",
+            "perfil_cliente.jpg"
+            );
         QCOMPARE(manager.getQuantidadeFornecedores(), 2); // Não deve mudar
         QCOMPARE(manager.getQuantidadeUsuarios(), 3); // Total deve ser 3
     }

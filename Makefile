@@ -5,11 +5,11 @@
 # @version 0.1
 CXX = g++
 # Adicionados Qt6Gui, Qt6Qml e Qt6Quick
-QT_MODULES = Qt6Core Qt6Gui Qt6Qml Qt6Quick Qt6Test
+QT_MODULES = Qt6Core Qt6Gui Qt6Qml Qt6Quick Qt6Test Qt6Sql
 CXXFLAGS = -fPIC -std=c++17 -I./include $(shell pkg-config --cflags $(QT_MODULES))
 LDFLAGS = $(shell pkg-config --libs $(QT_MODULES))
 
-MOC = /usr/lib/qt6/moc
+MOC = /usr/lib/qt6/libexec/moc
 
 SRC_DIR = src
 INC_DIR = include
