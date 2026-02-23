@@ -9,8 +9,9 @@ class UserRepository {
     UserRepository();
 
     public:
-    static bool insertClient(const Cliente& _client);
-    static bool insertSupplier(const Fornecedor& _supplier);
+    static qsizetype insertClient(const Cliente& _client);
+    static qsizetype insertSupplier(const Fornecedor& _supplier);
+    static Cliente* loginUser(const QString& email, const QString& cpf);
 
     static bool getUser(int id);
 };
