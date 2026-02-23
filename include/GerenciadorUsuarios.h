@@ -13,34 +13,30 @@
 
 class GerenciadorUsuarios : public QObject {
     Q_OBJECT
-    Q_PROPERTY(int quantidadeFornecedores READ getQuantidadeFornecedores NOTIFY fornecedorAdicionado);
+//    Q_PROPERTY(int quantidadeFornecedores READ getQuantidadeFornecedores NOTIFY fornecedorAdicionado);
 private:
-    QVector<Usuario*> m_usuarios;
     Usuario* m_usuarioLogado; // Currently logged in user
-    QSqlDatabase m_db;
-    void inicializarBanco();
-    void sincronizarVetorComBanco();
 
 public:
     explicit GerenciadorUsuarios(QObject *parent = nullptr);
     ~GerenciadorUsuarios();
 
-    Q_INVOKABLE QVariantMap fazerLogin(const QString& email, const QString& cpf);
+//    Q_INVOKABLE QVariantMap fazerLogin(const QString& email, const QString& cpf);
 
-    Q_INVOKABLE QVariantMap obterDetalhesFornecedor(int index);
+ //   Q_INVOKABLE QVariantMap obterDetalhesFornecedor(int index);
 
-    Q_INVOKABLE QVariantMap getUsuarioLogado();
+//    Q_INVOKABLE QVariantMap getUsuarioLogado();
 
-    Q_INVOKABLE void fazerLogout();
+//    Q_INVOKABLE void fazerLogout();
 
-    Q_INVOKABLE int getIndiceFornecedor(const QString& nome);
+//    Q_INVOKABLE int getIndiceFornecedor(const QString& nome);
 
-    Q_INVOKABLE QStringList buscarFornecedores(const QString& termo);
+//    Q_INVOKABLE QStringList buscarFornecedores(const QString& termo);
     int getQuantidadeUsuarios() const;
 
-    int getQuantidadeFornecedores() const;
+//    int getQuantidadeFornecedores() const;
 
-    Q_INVOKABLE QVariantList buscarFornecedoresComIndices(const QString& termo);
+//    Q_INVOKABLE QVariantList buscarFornecedoresComIndices(const QString& termo);
 
     Q_INVOKABLE bool cadastrarCliente(const QString& nome, const QString& email,
                                       const QString& cpf, const QString& dataNascimento,
