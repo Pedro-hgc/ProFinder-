@@ -8,7 +8,6 @@
 #include <QStringList>
 #include <QVariantMap>
 #include <QVariantList>
-#include <QSqlDatabase>
 #include "Usuario.h"
 
 class GerenciadorUsuarios : public QObject {
@@ -42,11 +41,11 @@ public:
                                       const QString& cpf, const QString& dataNascimento,
                                       const QString& fotoPerfil);
 
-    Q_INVOKABLE bool cadastrarFornecedor(const QString& nome, const QString& email,
+    Q_INVOKABLE QString cadastrarFornecedor(const QString& nome, const QString& email,
                                          const QString& cpf, const QString& dataNascimento,
-                                         const QString& fotoPerfil, const QString& cpfCnpj,
+                                         const QString& fotoPerfil,
                                          const QString& certificado, const QStringList& fotosServico,
-                                         const QString& descricao, const QVariantMap& servicos);
+                                         const QString& descricao, QVariantMap& servicos);
 signals:
     /**
      * @brief Sinal emitido sempre que o banco de dados JSON/Vetor é modificado.
