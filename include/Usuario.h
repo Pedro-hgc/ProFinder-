@@ -13,6 +13,7 @@ protected:
     QString cpf;
     QString dataNascimento; // Format: YYYY-MM-DD
     QString fotoPerfil; // Path or base64 encoded image
+    qsizetype id;
 
 public:
     /**
@@ -24,7 +25,7 @@ public:
      * @param fotoPerfil Caminho ou base64 da foto de perfil.
      */
     Usuario(const QString& nome, const QString& email, const QString& cpf, 
-            const QString& dataNascimento, const QString& fotoPerfil);
+            const QString& dataNascimento, const QString& fotoPerfil, const qsizetype id);
 
     virtual ~Usuario() = default;
 
@@ -58,6 +59,13 @@ public:
      */
     QString getFotoPerfil() const;
 
+
+    /**
+     * @brief Obtém o ID do usuário
+     * @return size_t contendo o ID do usuário
+     */
+    size_t getId() const ;
+
     /**
      * @brief Define o nome do usuário.
      * @param nome Novo nome do usuário.
@@ -88,6 +96,11 @@ public:
      */
     void setFotoPerfil(const QString& fotoPerfil);
 
+    /**
+     * @brief Define o ID do usuário.
+     * @param id que será definido.
+     */
+    void setId(const qsizetype _id);
     /**
      * @brief Método virtual puro para identificar o tipo de usuário.
      * @return QString representando o tipo ("Cliente" ou "Fornecedor").
