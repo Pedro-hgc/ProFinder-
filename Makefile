@@ -9,12 +9,21 @@ QT_MODULES = Qt6Core Qt6Gui Qt6Qml Qt6Quick Qt6Test Qt6Sql Qt6Widgets
 CXXFLAGS = -fPIC -std=c++17 -I./include $(shell pkg-config --cflags $(QT_MODULES))
 LDFLAGS = $(shell pkg-config --libs $(QT_MODULES))
 
-MOC_PATH = $(shell pkg-config --variable=host_bins Qt6Core)
-ifneq ($(MOC_PATH),)
-    MOC = $(MOC_PATH)/moc
-else
-    # Se falhar, tenta o nome comum no Arch/Fedora para Qt6
-    MOC = /usr/lib/qt6/moc
+ifeq ($(MOC),)
+    # Lista de caminhos comuns em várias distros
+    MOC_PATHS = /usr/lib/qt6/moc \
+                /usr/lib/qt6/bin/moc \
+                /usr/lib/qt6/libexec/moc \
+                /usr/lib64/qt6/bin/moc \
+                /usr/bin/moc-qt6
+
+    # Pega o primeiro caminho da lista que realmente exista no disco
+    MOC := $(firstword $(wildcard $(MOC_PATHS)))
+endif
+
+# Se mesmo assim falhar, avisa o usuário
+ifeq ($(MOC),)
+    $(error "Erro: Comando 'moc' do Qt6 nao encontrado. Verifique a instalacao do qt6-base.")
 endif
 
 SRC_DIR = src
