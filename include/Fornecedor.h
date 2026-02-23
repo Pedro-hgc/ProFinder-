@@ -10,11 +10,10 @@
  */
 class Fornecedor : public Usuario {
 private:
-    QString cpfCnpj; // CPF or CNPJ (can be different from base CPF for companies)
     QString certificadoAntecedentes; // Path or base64 encoded certificate
     QStringList fotosServico; // List of paths or base64 encoded images (1-5 photos)
     QString descricaoTrabalho; // Optional description
-    QMap<QString, int> servicosComAnos; // Map of service name -> years of experience
+    QVariantMap& servicosComAnos; // Map of service name -> years of experience
 
 public:
     /**
@@ -32,9 +31,9 @@ public:
      */
     Fornecedor(const QString& nome, const QString& email, 
                const QString& cpf, const QString& dataNascimento, const QString& fotoPerfil,
-               const QString& cpfCnpj, const QString& certificadoAntecedentes,
+               const QString& certificadoAntecedentes,
                const QStringList& fotosServico, const QString& descricaoTrabalho,
-               const QMap<QString, int>& servicosComAnos);
+               QVariantMap& servicosComAnos);
 
     /**
      * @brief Retorna o tipo do usuário.
@@ -43,18 +42,17 @@ public:
     QString getTipo() const override;
 
     // Getters
-    QString getCpfCnpj() const;
     QString getCertificadoAntecedentes() const;
     QStringList getFotosServico() const;
     QString getDescricaoTrabalho() const;
-    QMap<QString, int> getServicosComAnos() const;
+    QVariantMap& getServicosComAnos() const;
     
     // Setters
     void setCpfCnpj(const QString& cpfCnpj);
     void setCertificadoAntecedentes(const QString& certificado);
     void setFotosServico(const QStringList& fotos);
     void setDescricaoTrabalho(const QString& descricao);
-    void setServicosComAnos(const QMap<QString, int>& servicos);
+    void setServicosComAnos(const QVariantMap& servicos);
     
     // Helper methods
     void adicionarServico(const QString& servico, int anos);
