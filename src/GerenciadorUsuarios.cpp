@@ -14,7 +14,6 @@ GerenciadorUsuarios::~GerenciadorUsuarios() {
 QString GerenciadorUsuarios::cadastrarCliente(const QString& nome, const QString& email, const QString& cpf, const QString& dataNascimento, const QString& fotoPerfil) {
     if (nome == "") return "Erro: Preencha o campo Nome!";
 
-
     if (!email.contains('@') ) return "Erro: Insira um Email Válido!";
 
     if (cpf == "") return "Erro: Preencha o campo CPF!";
@@ -25,12 +24,14 @@ QString GerenciadorUsuarios::cadastrarCliente(const QString& nome, const QString
 
 
     Cliente _user(nome, email, cpf, dataNascimento, fotoPerfil);
-    if (!UserRepository::insertClient(_user)) {
+    qsizetype _id;
+    if ((_id = UserRepository::insertClient(_user)) == -1) {
         return "Erro: Cliente não foi cadastrado no Banco de Dados!";
     };
 
     if (m_usuarioLogado) delete m_usuarioLogado;
     m_usuarioLogado = new Cliente(_user);
+    m_usuarioLogado->setId(_id);
 
     return "Cliente Cadastrado com sucesso!";
 }
@@ -55,20 +56,51 @@ QString GerenciadorUsuarios::cadastrarFornecedor(const QString& nome, const QStr
     if(servicos.isEmpty()) return "Erro: Você precisa adicionar pelo menos um serviço!";
 
     Fornecedor _user(nome, email, cpf, dataNascimento, fotoPerfil, certificado, fotosServico, descricao, servicos);
-    if (!UserRepository::insertSupplier(_user)) {
+    qsizetype _id;
+    if ((_id = UserRepository::insertSupplier(_user)) == -1) {
         return "Erro: Fornecedor não foi cadastrado no Banco de Dados!";
     };
 
     if(m_usuarioLogado) delete m_usuarioLogado;
 
     m_usuarioLogado = new Fornecedor(_user);
+    m_usuarioLogado->setId(_id);
     return "Fornecedor Cadastrado com sucesso!";
 }
 
-/*QVariantMap GerenciadorUsuarios::fazerLogin(const QString& email, const QString& cpf) {
-    // TODO: Implement the fazerLogin() Method
+QVariantMap GerenciadorUsuarios::fazerLogin(const QString& email, const QString& cpf) {
+    QVariantMap _login_info;
+    if (!email.contains('@')) {
+        _login_info["Success"] = 0;
+        _login_info["Message"] = "Erro: Preencha com um Email válido!";
+        _login_info["Type"] = "Null";
 
-}*/
+        return _login_info;
+    }
+    if (cpf.isEmpty()) {
+        _login_info["Success"] = 0;
+        _login_info["Message"] = "Erro: Preencha com um CPF válido!";
+        _login_info["Type"] = "Null";
+        return _login_info;
+
+    }
+
+    m_usuarioLogado =  UserRepository::loginUser(email, cpf);
+
+    if (m_usuarioLogado == nullptr) {
+        _login_info["Success"] = 0;
+        _login_info["Message"] = "Erro: Usuário não foi encontrado!";
+        _login_info["Type"] = "Null";
+        return _login_info;
+    }
+
+    _login_info["Success"] = 1;
+    _login_info["Message"] = "User connected to system!";
+    _login_info["Type"] = m_usuarioLogado->getTipo();
+    emit dadosAlterados();
+    emit clienteAdicionado();
+    return _login_info;
+}
 
 //QVariantMap GerenciadorUsuarios::obterDetalhesFornecedor(int index) {
     // TODO
