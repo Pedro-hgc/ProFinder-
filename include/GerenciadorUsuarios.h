@@ -25,7 +25,7 @@ public:
 
  //   Q_INVOKABLE QVariantMap obterDetalhesFornecedor(int index);
 
-//    Q_INVOKABLE QVariantMap getUsuarioLogado();
+    Q_INVOKABLE QVariantMap getUsuarioLogado();
 
 //    Q_INVOKABLE void fazerLogout();
 
@@ -38,7 +38,7 @@ public:
 
 //    Q_INVOKABLE QVariantList buscarFornecedoresComIndices(const QString& termo);
 
-    Q_INVOKABLE bool cadastrarCliente(const QString& nome, const QString& email,
+    Q_INVOKABLE QString cadastrarCliente(const QString& nome, const QString& email,
                                       const QString& cpf, const QString& dataNascimento,
                                       const QString& fotoPerfil);
 
