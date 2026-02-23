@@ -18,7 +18,7 @@ TEST_DIR = tests
 UI_DIR = ui
 
 # Fontes do Core
-CORE_SRCS = $(SRC_DIR)/Usuario.cpp $(SRC_DIR)/Cliente.cpp $(SRC_DIR)/Fornecedor.cpp $(SRC_DIR)/GerenciadorUsuarios.cpp $(SRC_DIR)/DatabaseManager.cpp
+CORE_SRCS = $(SRC_DIR)/Usuario.cpp $(SRC_DIR)/Cliente.cpp $(SRC_DIR)/Fornecedor.cpp $(SRC_DIR)/GerenciadorUsuarios.cpp $(SRC_DIR)/DatabaseManager.cpp $(SRC_DIR)/UserRepository.cpp
 CORE_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CORE_SRCS))
 
 # Fonte da UI (main.cpp)
