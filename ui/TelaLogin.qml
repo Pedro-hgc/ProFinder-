@@ -42,15 +42,17 @@ Page {
             text: "Entrar"
             onClicked: {
                 let resultado = gerenciador.fazerLogin(emailInput.text, cpfInput.text)
-                if (resultado.sucesso) {
+                if (resultado.Success == 1) {
+                    statusLabel.text = "Conseguimos encontrar o usuário!"
+                    statusLabel.color = "green";
                     // Navigate to appropriate homepage
-                    if (resultado.tipo === "Cliente") {
+                    if (resultado.Type === "CLIENTE") {
                         stackView.push("TelaBusca.qml")
-                    } else if (resultado.tipo === "Fornecedor") {
+                    } else if (resultado.Type === "FORNECEDOR") {
                         stackView.push("TelaFornecedor.qml")
                     }
                 } else {
-                    statusLabel.text = "Erro: Email ou CPF incorretos."
+                    statusLabel.text = resultado.Message;
                     statusLabel.color = "red"
                 }
             }
