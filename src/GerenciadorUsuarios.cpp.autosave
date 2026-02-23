@@ -5,7 +5,16 @@
 #include <QtSql/QSqlError>
 #include <QDebug>
 
+QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+db.setDatabaseName("profinder_db.db");
 
+if (db.open()) {
+    QSqlQuery query;
+    
+}
+bool GerenciadorUsuarios::cadastrarFornecedor(const QString& nome, const QString& email, const QString& cpf, const QString& dataNascimento, const QString& fotoPerfil, const QString& cpfCnpj, const QString& certificado, const QStringList& fotosServico, const QString& descricao, const QVariantMap& servicos) {
+    
+}
 GerenciadorUsuarios::GerenciadorUsuarios(QObject *parent) : QObject(parent), m_usuarioLogado(nullptr) {
     inicializarBanco();
 }
